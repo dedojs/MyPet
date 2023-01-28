@@ -1,33 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
+using MyPet.Models.Dtos.Pet;
+using MyPet.Models.Dtos.Tutor;
+using MyPet.Repository.Interfaces;
 
 namespace MyPet.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class PetController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private readonly IMyPetRepository _repository;
+        public PetController(IMyPetRepository repository)
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
+            _repository = repository;   
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet]
+        public IActionResult GetPets()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Ok(_repository.GetPets());   
+        }
+
+        [HttpPost]
+        public IActionResult CreatePet([FromBody] CreatePetDto request)
+        {
+            if (request == null)
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                return BadRequest("Elemento Inválido");
+            }
+
+            _repository.CreatePet(request);
+            return Ok(request);
+
         }
     }
 }
