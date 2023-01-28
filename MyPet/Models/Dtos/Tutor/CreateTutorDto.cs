@@ -1,20 +1,18 @@
-﻿using MyPet.Models.Entidades;
-
-
-namespace MyPet.Models.Dtos.Tutor
+﻿namespace MyPet.Models.Dtos.Tutor
 {
-    public class TutorDto
+    public class CreateTutorDto
     {
-        public int TutorId { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Cep { get; set; }
+        public string Password { get; set; }
 
-        public TutorDto(string nome, string email, string cep)
+        public CreateTutorDto(string nome, string email, string cep, string password)
         {
             Nome = nome;
             Email = email;
             Cep = cep;
+            Password = password;
         }
     }
 }

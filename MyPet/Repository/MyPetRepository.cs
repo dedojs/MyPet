@@ -1,18 +1,31 @@
-﻿using MyPet.Models.Entidades;
+﻿using MyPet.Models.Dtos.Tutor;
+using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
 
 namespace MyPet.Repository
 {
     public class MyPetRepository : IMyPetRepository
     {
+        private readonly IMyPetContext _context;
+
+        public MyPetRepository(IMyPetContext context)
+        {
+            _context = context;
+        }
+
         public Pet CreatePet(Pet pet)
         {
             throw new NotImplementedException();
         }
 
-        public Tutor CreateTutor(Tutor tutor)
+        public TutorDto CreateTutor(CreateTutorDto tutorDto)
         {
-            throw new NotImplementedException();
+            var tutor = new Tutor(tutorDto.Nome, tutorDto.Email, tutorDto.Cep, tutorDto.Password);
+            _context.Tutores.Add(tutor);
+            _context.SaveChanges();
+
+            return new TutorDto(tutor.Nome, tutor.Email, tutor.Cep);
+
         }
 
         public void DeletePet(int id)
