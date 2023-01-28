@@ -14,13 +14,13 @@ namespace MyPet.Repository
             _context = context;
         }
 
-        public PetDto CreatePet(PetDto petDto)
+        public CreatePetDto CreatePet(CreatePetDto petDto)
         {
             var pet = new Pet(petDto.Nome, petDto.Porte, petDto.Raca, petDto.TutorId);
             _context.Pets.Add(pet);
             _context.SaveChanges();
 
-            return new PetDto(pet.Nome, pet.Porte, pet.Raca, pet.TutorId);
+            return new CreatePetDto(pet.Nome, pet.Porte, pet.Raca, pet.TutorId);
         }
 
         public TutorDto CreateTutor(CreateTutorDto tutorDto)
@@ -47,10 +47,17 @@ namespace MyPet.Repository
             throw new NotImplementedException();
         }
 
-        public List<Pet> GetPets()
+        public List<PetDto> GetPets()
         {
-            var listPets = _context.Pets.ToList();
-            return listPets;
+            var listDataPets = _context.Pets.ToList();
+            List<PetDto> pets = new ();
+
+            foreach (var item in listDataPets)
+            {
+                pets.Add(new PetDto(item.PetId, item.Nome, item.Porte, item.Raca, item.TutorId));
+            }
+
+            return pets;
         }
 
         public Tutor GetTutor(int id)
@@ -58,10 +65,17 @@ namespace MyPet.Repository
             throw new NotImplementedException();
         }
 
-        public List<Tutor> GetTutores()
+        public List<TutorDto> GetTutores()
         {
             var listTutores = _context.Tutores.ToList();
-            return listTutores;
+            List<TutorDto> tutores = new();
+
+            foreach (var item in listTutores)
+            {
+                tutores.Add(new TutorDto(item.TutorId, item.Nome, item.Email, item.Cep));
+            }
+
+            return tutores;
         }
 
         public void UpdatePet(Pet pet)

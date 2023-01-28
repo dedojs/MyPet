@@ -1,8 +1,8 @@
 ﻿namespace MyPet.Models.Dtos.Pet
 {
-    public class PetDto
+    public class CreatePetDto
     {
-        public PetDto(string nome, string porte, string raca, int tutorId)
+        public CreatePetDto(string nome, string porte, string raca, int tutorId)
         {
             Nome = nome;
             Porte = porte;
@@ -10,6 +10,7 @@
             TutorId = tutorId;
         }
 
+        
         public int PetId { get; set; }
         public string Nome { get; set; }
         public string Porte { get; set; }

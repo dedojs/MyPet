@@ -21,6 +21,16 @@ namespace MyPet.Models.Entidades
             Pets = new List<Pet>();
         }
 
+        public Tutor(int id, string nome, string email, string cep, string password)
+        {
+            TutorId = id;
+            Nome = nome;
+            Email = email;
+            Cep = cep;
+            Password = password;
+            Pets = new List<Pet>();
+        }
+
 
     }
 }

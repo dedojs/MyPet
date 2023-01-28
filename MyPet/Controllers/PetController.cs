@@ -22,7 +22,7 @@ namespace MyPet.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePet([FromBody] PetDto request)
+        public IActionResult CreatePet([FromBody] CreatePetDto request)
         {
             if (request == null)
             {

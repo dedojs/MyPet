@@ -21,5 +21,14 @@ namespace MyPet.Models.Entidades
             TutorId = tutorId;
         }
 
+        public Pet(int id, string nome, string porte, string raca, int tutorId)
+        {
+            PetId = id;
+            Nome = nome;
+            Porte = porte;
+            Raca = raca;
+            TutorId = tutorId;
+        }
+
     }
 }
