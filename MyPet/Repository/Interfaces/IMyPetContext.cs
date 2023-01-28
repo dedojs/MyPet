@@ -1,6 +1,13 @@
-﻿namespace MyPet.Repository.Interfaces
+﻿using Microsoft.EntityFrameworkCore;
+using MyPet.Models.Entidades;
+
+namespace MyPet.Repository.Interfaces
 {
-    public class IMyPetContext
+    public interface IMyPetContext
     {
+        public DbSet<Pet> Pets { get; set; }
+        public DbSet<Tutor> Tutores { get; set; }
+        public int SaveChanges();
+
     }
 }

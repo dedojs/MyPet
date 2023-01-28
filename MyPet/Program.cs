@@ -1,3 +1,6 @@
+using MyPet.Repository;
+using MyPet.Repository.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+builder.Services.AddDbContext<MyPetContext>();
+builder.Services.AddScoped<IMyPetContext, MyPetContext>();
+builder.Services.AddScoped<IMyPetRepository, MyPetRepository>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
