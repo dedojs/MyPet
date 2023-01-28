@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyPet.Models
+namespace MyPet.Models.Entidades
 {
     public class Tutor
     {
@@ -8,7 +8,7 @@ namespace MyPet.Models
         public int TutorId { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
-        public string Cep { get; set;}
+        public string Cep { get; set; }
         public string Password { get; set; }
         public List<Pet> Pets { get; set; }
 
