@@ -1,20 +1,22 @@
-﻿using MyPet.Models.Entidades;
+﻿using MyPet.Models.Dtos.Pet;
+using MyPet.Models.Dtos.Tutor;
+using MyPet.Models.Entidades;
 
 namespace MyPet.Repository.Interfaces
 {
     public interface IMyPetRepository
     {
         // C.R.U.D TUTOR
-        Tutor GetTutorores();
+        List<Tutor> GetTutores();
         Tutor GetTutor(int id);
-        Tutor CreateTutor(Tutor tutor);
+        TutorDto CreateTutor(CreateTutorDto tutorDto);
         void UpdateTutor(Tutor tutor);
         void DeleteTutor(int id);
 
         // C.R.U.D PET
-        Pet GetPets();
+        List<Pet> GetPets();
         Pet GetPet(int id);
-        Pet CreatePet(Pet pet);
+        PetDto CreatePet(PetDto pet);
         void UpdatePet(Pet pet);
         void DeletePet(int id);
 

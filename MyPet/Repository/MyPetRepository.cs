@@ -1,4 +1,5 @@
-﻿using MyPet.Models.Dtos.Tutor;
+﻿using MyPet.Models.Dtos.Pet;
+using MyPet.Models.Dtos.Tutor;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
 
@@ -13,9 +14,13 @@ namespace MyPet.Repository
             _context = context;
         }
 
-        public Pet CreatePet(Pet pet)
+        public PetDto CreatePet(PetDto petDto)
         {
-            throw new NotImplementedException();
+            var pet = new Pet(petDto.Nome, petDto.Porte, petDto.Raca, petDto.TutorId);
+            _context.Pets.Add(pet);
+            _context.SaveChanges();
+
+            return new PetDto(pet.Nome, pet.Porte, pet.Raca, pet.TutorId);
         }
 
         public TutorDto CreateTutor(CreateTutorDto tutorDto)
@@ -25,7 +30,6 @@ namespace MyPet.Repository
             _context.SaveChanges();
 
             return new TutorDto(tutor.Nome, tutor.Email, tutor.Cep);
-
         }
 
         public void DeletePet(int id)
@@ -43,9 +47,10 @@ namespace MyPet.Repository
             throw new NotImplementedException();
         }
 
-        public Pet GetPets()
+        public List<Pet> GetPets()
         {
-            throw new NotImplementedException();
+            var listPets = _context.Pets.ToList();
+            return listPets;
         }
 
         public Tutor GetTutor(int id)
@@ -53,9 +58,10 @@ namespace MyPet.Repository
             throw new NotImplementedException();
         }
 
-        public Tutor GetTutorores()
+        public List<Tutor> GetTutores()
         {
-            throw new NotImplementedException();
+            var listTutores = _context.Tutores.ToList();
+            return listTutores;
         }
 
         public void UpdatePet(Pet pet)
