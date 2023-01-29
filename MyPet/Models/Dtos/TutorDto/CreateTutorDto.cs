@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MyPet.Models.Entidades;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyPet.Models.Dtos.TutorDto
 {
@@ -17,6 +18,8 @@ namespace MyPet.Models.Dtos.TutorDto
         [Required]
         [StringLength(8, MinimumLength = 6, ErrorMessage = "A senha deve conter entre 6 e 8 caracteres")]
         public string Password { get; set; }
-        
+
+        public Endereco Endereco { get; set; }
+
     }
 }

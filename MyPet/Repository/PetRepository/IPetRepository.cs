@@ -1,6 +1,4 @@
 ﻿using MyPet.Models.Dtos.PetDto;
-using MyPet.Models.Dtos.TutorDto;
-using MyPet.Models.Entidades;
 
 namespace MyPet.Repository.Interfaces
 {

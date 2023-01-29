@@ -17,6 +17,9 @@ namespace MyPet.Models.Entidades
         [Range(6, 8, ErrorMessage = "A senha deve conter entre 6 e 8 caracteres")]
         public string Password { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }
+        public int EnderecoId { get; set; }
+
+        public virtual Endereco Endereco{ get; set; }
 
 
     }

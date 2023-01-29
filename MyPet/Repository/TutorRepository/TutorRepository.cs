@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyPet.Models.Dtos.PetDto;
 using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Context;
@@ -22,9 +19,8 @@ namespace MyPet.Repository.TutorRepository
 
         public TutorDto CreateTutor(CreateTutorDto createTutorDto)
         {
-            var cepValidation = createTutorDto.Cep;
-
             var tutor = _mapper.Map<Tutor>(createTutorDto);
+            _context.Enderecos.Add(cep);
             _context.Tutores.Add(tutor);
             _context.SaveChanges();
 

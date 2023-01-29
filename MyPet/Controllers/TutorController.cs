@@ -3,6 +3,7 @@ using MyPet.Models.Dtos.PetDto;
 using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
+using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -11,8 +12,10 @@ namespace MyPet.Controllers
     public class TutorController : ControllerBase
     {
         private readonly ITutorRepository _repository;
-        public TutorController(ITutorRepository repository)
+        private readonly ITutorService _service;
+        public TutorController(ITutorRepository repository, ITutorService tutorService)
         {
+            _service = tutorService;
             _repository = repository;
         }
 
@@ -35,11 +38,16 @@ namespace MyPet.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateTutores([FromBody] CreateTutorDto request)
+        public async Task<IActionResult> CreateTutores([FromBody] CreateTutorDto request)
         {
             if (request == null)
             {
                 return BadRequest("Elemento Inválido");
+            }
+            var cep = await _service.ValidateCep(request.Cep);
+            if (cep == null)
+            {
+                return NotFound("Cep Inválido");
             }
 
             var response = _repository.CreateTutor(request);
@@ -75,6 +83,7 @@ namespace MyPet.Controllers
 
             return NoContent();
         }
+
     }
        
 }
