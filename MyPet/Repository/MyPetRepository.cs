@@ -1,4 +1,5 @@
-﻿using MyPet.Models.Dtos.Pet;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyPet.Models.Dtos.Pet;
 using MyPet.Models.Dtos.Tutor;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
@@ -44,7 +45,14 @@ namespace MyPet.Repository
 
         public Pet GetPet(int id)
         {
-            throw new NotImplementedException();
+            var pet = _context.Pets.FirstOrDefault(pet => pet.PetId == id);
+
+            if (pet == null)
+            {
+                return null;
+            }
+
+            return pet;
         }
 
         public List<PetDto> GetPets()
@@ -62,7 +70,14 @@ namespace MyPet.Repository
 
         public Tutor GetTutor(int id)
         {
-            throw new NotImplementedException();
+            var tutor = _context.Tutores.FirstOrDefault(tutor => tutor.TutorId == id);
+
+            if (tutor == null)
+            {
+                return null;
+            }
+
+            return tutor;
         }
 
         public List<TutorDto> GetTutores()

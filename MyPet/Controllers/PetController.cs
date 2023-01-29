@@ -21,6 +21,18 @@ namespace MyPet.Controllers
             return Ok(_repository.GetPets());   
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetPet(int id)
+        {
+            var pet = _repository.GetPet(id);
+            if (pet == null)
+            {
+                return NotFound("Pet não localizado");
+            }
+
+            return Ok(pet);
+        }
+
         [HttpPost]
         public IActionResult CreatePet([FromBody] CreatePetDto request)
         {
@@ -31,7 +43,6 @@ namespace MyPet.Controllers
 
             _repository.CreatePet(request);
             return Ok(request);
-
         }
     }
 }
