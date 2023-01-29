@@ -22,6 +22,8 @@ namespace MyPet.Repository.TutorRepository
 
         public TutorDto CreateTutor(CreateTutorDto createTutorDto)
         {
+            var cepValidation = createTutorDto.Cep;
+
             var tutor = _mapper.Map<Tutor>(createTutorDto);
             _context.Tutores.Add(tutor);
             _context.SaveChanges();
