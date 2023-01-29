@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyPet.Models.Entidades;
 
-namespace MyPet.Repository.Interfaces
+namespace MyPet.Repository.Context
 {
     public interface IMyPetContext
     {

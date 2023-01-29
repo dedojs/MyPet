@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.Pet;
-using MyPet.Models.Dtos.Tutor;
+using MyPet.Models.Dtos.PetDto;
+using MyPet.Models.Dtos.TutorDto;
+using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
 
 namespace MyPet.Controllers
@@ -9,8 +10,8 @@ namespace MyPet.Controllers
     [Route("[controller]")]
     public class TutorController : ControllerBase
     {
-        private readonly IMyPetRepository _repository;
-        public TutorController(IMyPetRepository repository)
+        private readonly ITutorRepository _repository;
+        public TutorController(ITutorRepository repository)
         {
             _repository = repository;
         }
@@ -21,6 +22,18 @@ namespace MyPet.Controllers
             return Ok(_repository.GetTutores());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetTutor(int id)
+        {
+            var tutor = _repository.GetTutor(id);
+            if (tutor == null)
+            {
+                return NotFound("Tutor não localizado");
+            }
+
+            return Ok(tutor);
+        }
+
         [HttpPost]
         public IActionResult CreateTutores([FromBody] CreateTutorDto request)
         {
@@ -29,8 +42,38 @@ namespace MyPet.Controllers
                 return BadRequest("Elemento Inválido");
             }
 
-            _repository.CreateTutor(request);
-            return Ok(request);
+            var response = _repository.CreateTutor(request);
+
+            return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
+        {
+            var tutor = _repository.GetTutor(id);
+
+            if (tutor == null)
+            {
+                return NotFound("Tutor não localizado");
+            }
+
+            _repository.UpdateTutor(id, tutorDto);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTutor(int id)
+        {
+            var tutor = _repository.GetTutor(id);
+
+            if (tutor == null)
+            {
+                return NotFound("Tutor não localizado");
+            }
+            _repository.DeleteTutor(id);
+
+            return NoContent();
         }
     }
        

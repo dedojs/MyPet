@@ -6,30 +6,16 @@ namespace MyPet.Models.Entidades
     {
         [Key]
         public int TutorId { get; set; }
+        [Required]
         public string Nome { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
         public string Cep { get; set; }
+        [Required]
+        [Range(6, 8, ErrorMessage = "A senha deve conter entre 6 e 8 caracteres")]
         public string Password { get; set; }
-        public List<Pet> Pets { get; set; }
-
-        public Tutor(string nome, string email, string cep, string password)
-        {
-            Nome = nome;
-            Email = email;
-            Cep = cep;
-            Password = password;
-            Pets = new List<Pet>();
-        }
-
-        public Tutor(int id, string nome, string email, string cep, string password)
-        {
-            TutorId = id;
-            Nome = nome;
-            Email = email;
-            Cep = cep;
-            Password = password;
-            Pets = new List<Pet>();
-        }
+        public virtual ICollection<Pet> Pets { get; set; }
 
 
     }

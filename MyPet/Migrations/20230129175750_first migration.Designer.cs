@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPet.Repository.Context;
 
@@ -11,9 +12,10 @@ using MyPet.Repository.Context;
 namespace MyPet.Migrations
 {
     [DbContext(typeof(MyPetContext))]
-    partial class MyPetContextModelSnapshot : ModelSnapshot
+    [Migration("20230129175750_first migration")]
+    partial class firstmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
