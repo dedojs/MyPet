@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MyPet.Migrations
 {
-    public partial class first : Migration
+    public partial class firstmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,6 +34,7 @@ namespace MyPet.Migrations
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Porte = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Raca = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TutorId = table.Column<int>(type: "int", nullable: false),
                     HashCode = table.Column<int>(type: "int", nullable: false)
                 },
@@ -60,14 +62,14 @@ namespace MyPet.Migrations
 
             migrationBuilder.InsertData(
                 table: "Pets",
-                columns: new[] { "PetId", "HashCode", "Nome", "Porte", "Raca", "TutorId" },
+                columns: new[] { "PetId", "DataNascimento", "HashCode", "Nome", "Porte", "Raca", "TutorId" },
                 values: new object[,]
                 {
-                    { 1, 0, "July", "Pequeno", "Cão", 1 },
-                    { 2, 0, "Bob", "Pequeno", "Cachorro", 2 },
-                    { 3, 0, "Bisteca", "´Médio", "Cachorro", 3 },
-                    { 4, 0, "Alecrim", "Pequeno", "Gato", 4 },
-                    { 5, 0, "Mini", "Pequeno", "Gato", 4 }
+                    { 1, new DateTime(2020, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "July", "Pequeno", "Cão", 1 },
+                    { 2, new DateTime(2015, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Bob", "Pequeno", "Cachorro", 2 },
+                    { 3, new DateTime(2010, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Bisteca", "´Médio", "Cachorro", 3 },
+                    { 4, new DateTime(2021, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Alecrim", "Pequeno", "Gato", 4 },
+                    { 5, new DateTime(2012, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Mini", "Pequeno", "Gato", 4 }
                 });
 
             migrationBuilder.CreateIndex(

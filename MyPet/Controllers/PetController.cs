@@ -1,6 +1,8 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.Pet;
-using MyPet.Models.Dtos.Tutor;
+using MyPet.Models.Dtos.PetDto;
+using MyPet.Models.Dtos.TutorDto;
+using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
 
 namespace MyPet.Controllers
@@ -9,10 +11,12 @@ namespace MyPet.Controllers
     [Route("[controller]")]
     public class PetController : ControllerBase
     {
-        private readonly IMyPetRepository _repository;
-        public PetController(IMyPetRepository repository)
+        private readonly IPetRepository _repository;
+        
+        public PetController(IPetRepository repository)
         {
-            _repository = repository;   
+            _repository = repository;
+            
         }
 
         [HttpGet]
@@ -41,8 +45,43 @@ namespace MyPet.Controllers
                 return BadRequest("Elemento Inválido");
             }
 
-            _repository.CreatePet(request);
-            return Ok(request);
+            var response = _repository.CreatePet(request);
+
+            if (response == null)
+            {
+                return NotFound("Tutor inválido");
+            }
+
+            return CreatedAtAction(nameof(GetPet), new { id = response.PetId }, response);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdatePet(int id, [FromBody] CreatePetDto petDto)
+        {
+            var pet = _repository.GetPet(id);
+
+            if (pet == null)
+            {
+                return NotFound("Pet não localizado");
+            }
+
+            _repository.UpdatePet(id, petDto);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeletePet(int id)
+        {
+            var pet = _repository.GetPet(id);
+
+            if (pet == null)
+            {
+                return NotFound("Pet não localizado");
+            }
+            _repository.DeletePet(id);
+
+            return NoContent();
         }
     }
 }
