@@ -3,6 +3,7 @@ using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Context;
 using MyPet.Repository.Interfaces;
+using System.Runtime.ConstrainedExecution;
 
 namespace MyPet.Repository.TutorRepository
 {
@@ -20,7 +21,6 @@ namespace MyPet.Repository.TutorRepository
         public TutorDto CreateTutor(CreateTutorDto createTutorDto)
         {
             var tutor = _mapper.Map<Tutor>(createTutorDto);
-            _context.Enderecos.Add(cep);
             _context.Tutores.Add(tutor);
             _context.SaveChanges();
 
@@ -46,7 +46,12 @@ namespace MyPet.Repository.TutorRepository
                 return null;
             }
 
+            var cep = tutor.Cep.Insert(5, "-");
+            var endereco = _context.Enderecos.FirstOrDefault(e => e.Cep == cep);
+            
             var tutorDto = _mapper.Map<TutorDto>(tutor);
+
+            tutorDto.Endereco = endereco;
 
             return tutorDto;
         }

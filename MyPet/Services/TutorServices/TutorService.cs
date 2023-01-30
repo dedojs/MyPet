@@ -1,4 +1,5 @@
 ﻿using MyPet.Models.Entidades;
+using Newtonsoft.Json;
 
 namespace MyPet.Services.TutorServices
 {
@@ -13,18 +14,18 @@ namespace MyPet.Services.TutorServices
             _client.BaseAddress = new Uri(_baseUrl);
         }
 
-        public async Task<object> ValidateCep(string cep)
+        public async Task<Endereco> ValidateCep(string cep)
         {
             var url = $"{cep}/json/";
             var response = await _client.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
             {
-                return default(object);
+                return null;
             }
 
-            var result = await response.Content.ReadFromJsonAsync<object>();
-            
+            var result = await response.Content.ReadFromJsonAsync<Endereco>();
+
             return result;
         }
     }

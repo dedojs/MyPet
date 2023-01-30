@@ -1,7 +1,9 @@
-﻿namespace MyPet.Services.TutorServices
+﻿using MyPet.Models.Entidades;
+
+namespace MyPet.Services.TutorServices
 {
     public interface ITutorService
     {
-        Task<object> ValidateCep(string cep);
+        Task<Endereco> ValidateCep(string cep);
     }
 }

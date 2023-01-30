@@ -14,6 +14,7 @@ builder.Services.AddDbContext<MyPetContext>();
 builder.Services.AddScoped<IMyPetContext, MyPetContext>();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 
 // Add Mapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

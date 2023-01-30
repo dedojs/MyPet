@@ -12,10 +12,12 @@ namespace MyPet.Controllers
     public class TutorController : ControllerBase
     {
         private readonly ITutorRepository _repository;
+        private readonly IEnderecoRepository _enderecoRepository;
         private readonly ITutorService _service;
-        public TutorController(ITutorRepository repository, ITutorService tutorService)
+        public TutorController(ITutorRepository repository, ITutorService tutorService, IEnderecoRepository enderecoRepository)
         {
             _service = tutorService;
+            _enderecoRepository = enderecoRepository;
             _repository = repository;
         }
 
@@ -51,6 +53,13 @@ namespace MyPet.Controllers
             }
 
             var response = _repository.CreateTutor(request);
+
+            var endereco = _enderecoRepository.GetEnderecosByCep(request.Cep);
+
+            if (endereco == null)
+            {
+                _enderecoRepository.CreateEndereco(cep);
+            }
 
             return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
         }

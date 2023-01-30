@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
+using System.Text.Json.Serialization;
 
 namespace MyPet.Models.Entidades
 {
@@ -17,10 +19,6 @@ namespace MyPet.Models.Entidades
         [Range(6, 8, ErrorMessage = "A senha deve conter entre 6 e 8 caracteres")]
         public string Password { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }
-        public int EnderecoId { get; set; }
-
-        public virtual Endereco Endereco{ get; set; }
-
-
+        
     }
 }
