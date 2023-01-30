@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyPet.Models.Dtos.PetDto;
 using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Context;
 using MyPet.Repository.Interfaces;
+using System.Runtime.ConstrainedExecution;
 
 namespace MyPet.Repository.TutorRepository
 {
@@ -48,7 +46,12 @@ namespace MyPet.Repository.TutorRepository
                 return null;
             }
 
+            var cep = tutor.Cep.Insert(5, "-");
+            var endereco = _context.Enderecos.FirstOrDefault(e => e.Cep == cep);
+            
             var tutorDto = _mapper.Map<TutorDto>(tutor);
+
+            tutorDto.Endereco = endereco;
 
             return tutorDto;
         }

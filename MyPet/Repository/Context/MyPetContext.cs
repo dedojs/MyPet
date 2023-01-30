@@ -7,6 +7,7 @@ namespace MyPet.Repository.Context
     {
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Tutor> Tutores { get; set; }
+        public DbSet<Endereco> Enderecos { get; set; }
 
         public MyPetContext(DbContextOptions<MyPetContext> options) : base(options) { }
 
@@ -25,12 +26,26 @@ namespace MyPet.Repository.Context
                 .WithOne(p => p.Tutor)
                 .HasForeignKey(p => p.TutorId);
 
+            modelBuilder.Entity<Endereco>()
+                .HasData(
+                new Endereco
+                {
+                    EnderecoId = 1,
+                    Cep = "45028674",
+                    Logradouro = "Rua Erico Gonçalves Aguiar",
+                    Complemento = "",
+                    Bairro = "Candeias",
+                    Localidade = "Vitória da Conquista",
+                    Uf = "BA"
+                }
+                );
+
             modelBuilder.Entity<Tutor>()
                 .HasData(
-                    new Tutor { TutorId = 1, Nome = "Andre", Email = "andre@gmail.com", Cep = "45028-125", Password = "123456" },
-                    new Tutor { TutorId = 2, Nome = "Luisa", Email = "luisa@gmail.com", Cep = "45028-674", Password = "789654" },
-                    new Tutor { TutorId = 3, Nome = "Lara", Email = "lara@gmail.com", Cep = "41250-330", Password = "147852" },
-                    new Tutor { TutorId = 4, Nome = "Livia", Email = "livia@gmail.com", Cep = "45028618", Password = "987654" }
+                    new Tutor { TutorId = 1, Nome = "Andre", Email = "andre@gmail.com", Cep = "45028125", Password = "123456" },
+                    new Tutor { TutorId = 2, Nome = "Luisa", Email = "luisa@gmail.com", Cep = "45028674", Password = "789654" },
+                    new Tutor { TutorId = 3, Nome = "Lara", Email = "lara@gmail.com", Cep = "45028674", Password = "147852" },
+                    new Tutor { TutorId = 4, Nome = "Livia", Email = "livia@gmail.com", Cep = "45028125", Password = "987654" }
                 );
 
             modelBuilder.Entity<Pet>()

@@ -12,8 +12,8 @@ using MyPet.Repository.Context;
 namespace MyPet.Migrations
 {
     [DbContext(typeof(MyPetContext))]
-    [Migration("20230129180824_add idade2")]
-    partial class addidade2
+    [Migration("20230130191335_first migration")]
+    partial class firstmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,55 @@ namespace MyPet.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("MyPet.Models.Entidades.Endereco", b =>
+                {
+                    b.Property<int>("EnderecoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnderecoId"), 1L, 1);
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Localidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logradouro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Uf")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EnderecoId");
+
+                    b.ToTable("Enderecos");
+
+                    b.HasData(
+                        new
+                        {
+                            EnderecoId = 1,
+                            Bairro = "Candeias",
+                            Cep = "45028674",
+                            Complemento = "",
+                            Localidade = "Vitória da Conquista",
+                            Logradouro = "Rua Erico",
+                            Uf = "BA"
+                        });
+                });
 
             modelBuilder.Entity("MyPet.Models.Entidades.Pet", b =>
                 {
@@ -36,9 +85,6 @@ namespace MyPet.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("HashCode")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdadePet")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -68,7 +114,6 @@ namespace MyPet.Migrations
                             PetId = 1,
                             DataNascimento = new DateTime(2020, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HashCode = 0,
-                            IdadePet = 0,
                             Nome = "July",
                             Porte = "Pequeno",
                             Raca = "Cão",
@@ -79,7 +124,6 @@ namespace MyPet.Migrations
                             PetId = 2,
                             DataNascimento = new DateTime(2015, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HashCode = 0,
-                            IdadePet = 0,
                             Nome = "Bob",
                             Porte = "Pequeno",
                             Raca = "Cachorro",
@@ -90,7 +134,6 @@ namespace MyPet.Migrations
                             PetId = 3,
                             DataNascimento = new DateTime(2010, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HashCode = 0,
-                            IdadePet = 0,
                             Nome = "Bisteca",
                             Porte = "´Médio",
                             Raca = "Cachorro",
@@ -101,7 +144,6 @@ namespace MyPet.Migrations
                             PetId = 4,
                             DataNascimento = new DateTime(2021, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HashCode = 0,
-                            IdadePet = 0,
                             Nome = "Alecrim",
                             Porte = "Pequeno",
                             Raca = "Gato",
@@ -112,7 +154,6 @@ namespace MyPet.Migrations
                             PetId = 5,
                             DataNascimento = new DateTime(2012, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HashCode = 0,
-                            IdadePet = 0,
                             Nome = "Mini",
                             Porte = "Pequeno",
                             Raca = "Gato",
@@ -130,7 +171,8 @@ namespace MyPet.Migrations
 
                     b.Property<string>("Cep")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -152,7 +194,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 1,
-                            Cep = "45028-125",
+                            Cep = "45028125",
                             Email = "andre@gmail.com",
                             Nome = "Andre",
                             Password = "123456"
@@ -160,7 +202,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 2,
-                            Cep = "45028-674",
+                            Cep = "45028674",
                             Email = "luisa@gmail.com",
                             Nome = "Luisa",
                             Password = "789654"
@@ -168,7 +210,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 3,
-                            Cep = "41250-330",
+                            Cep = "45028674",
                             Email = "lara@gmail.com",
                             Nome = "Lara",
                             Password = "147852"
@@ -176,7 +218,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 4,
-                            Cep = "45028618",
+                            Cep = "45028125",
                             Email = "livia@gmail.com",
                             Nome = "Livia",
                             Password = "987654"

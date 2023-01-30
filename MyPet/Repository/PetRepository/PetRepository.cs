@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MyPet.Models.Dtos.PetDto;
-using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Context;
 using MyPet.Repository.Interfaces;

@@ -22,6 +22,55 @@ namespace MyPet.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("MyPet.Models.Entidades.Endereco", b =>
+                {
+                    b.Property<int>("EnderecoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnderecoId"), 1L, 1);
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Localidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logradouro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Uf")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EnderecoId");
+
+                    b.ToTable("Enderecos");
+
+                    b.HasData(
+                        new
+                        {
+                            EnderecoId = 1,
+                            Bairro = "Candeias",
+                            Cep = "45028674",
+                            Complemento = "",
+                            Localidade = "Vitória da Conquista",
+                            Logradouro = "Rua Erico",
+                            Uf = "BA"
+                        });
+                });
+
             modelBuilder.Entity("MyPet.Models.Entidades.Pet", b =>
                 {
                     b.Property<int>("PetId")
@@ -120,7 +169,8 @@ namespace MyPet.Migrations
 
                     b.Property<string>("Cep")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -142,7 +192,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 1,
-                            Cep = "45028-125",
+                            Cep = "45028125",
                             Email = "andre@gmail.com",
                             Nome = "Andre",
                             Password = "123456"
@@ -150,7 +200,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 2,
-                            Cep = "45028-674",
+                            Cep = "45028674",
                             Email = "luisa@gmail.com",
                             Nome = "Luisa",
                             Password = "789654"
@@ -158,7 +208,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 3,
-                            Cep = "41250-330",
+                            Cep = "45028674",
                             Email = "lara@gmail.com",
                             Nome = "Lara",
                             Password = "147852"
@@ -166,7 +216,7 @@ namespace MyPet.Migrations
                         new
                         {
                             TutorId = 4,
-                            Cep = "45028618",
+                            Cep = "45028125",
                             Email = "livia@gmail.com",
                             Nome = "Livia",
                             Password = "987654"

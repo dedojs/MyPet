@@ -10,6 +10,24 @@ namespace MyPet.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Enderecos",
+                columns: table => new
+                {
+                    EnderecoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Logradouro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Complemento = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Localidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Uf = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Enderecos", x => x.EnderecoId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tutores",
                 columns: table => new
                 {
@@ -17,7 +35,7 @@ namespace MyPet.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cep = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -50,14 +68,19 @@ namespace MyPet.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Enderecos",
+                columns: new[] { "EnderecoId", "Bairro", "Cep", "Complemento", "Localidade", "Logradouro", "Uf" },
+                values: new object[] { 1, "Candeias", "45028674", "", "Vitória da Conquista", "Rua Erico", "BA" });
+
+            migrationBuilder.InsertData(
                 table: "Tutores",
                 columns: new[] { "TutorId", "Cep", "Email", "Nome", "Password" },
                 values: new object[,]
                 {
-                    { 1, "45028-125", "andre@gmail.com", "Andre", "123456" },
-                    { 2, "45028-674", "luisa@gmail.com", "Luisa", "789654" },
-                    { 3, "41250-330", "lara@gmail.com", "Lara", "147852" },
-                    { 4, "45028618", "livia@gmail.com", "Livia", "987654" }
+                    { 1, "45028125", "andre@gmail.com", "Andre", "123456" },
+                    { 2, "45028674", "luisa@gmail.com", "Luisa", "789654" },
+                    { 3, "45028674", "lara@gmail.com", "Lara", "147852" },
+                    { 4, "45028125", "livia@gmail.com", "Livia", "987654" }
                 });
 
             migrationBuilder.InsertData(
@@ -80,6 +103,9 @@ namespace MyPet.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Enderecos");
+
             migrationBuilder.DropTable(
                 name: "Pets");
 
