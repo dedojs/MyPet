@@ -4,6 +4,7 @@ using MyPet.Models.Dtos.PetDto;
 using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
+using MyPet.Utils;
 
 namespace MyPet.Controllers
 {
@@ -83,5 +84,21 @@ namespace MyPet.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("qrcode/{id}")]
+        public IActionResult GenerateQrCode(int id)
+        {
+            var pet = _repository.GetPet(id);
+            if (pet == null)
+            {
+                return NotFound("Pet não localizado");
+            }
+
+            var qrCode = GenerateQrCodeForData.CreateQrCode(pet);
+
+            return File(qrCode, "image/jpeg");
+        }
+
+
     }
 }

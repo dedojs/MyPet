@@ -1,9 +1,8 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.PetDto;
-using MyPet.Models.Dtos.TutorDto;
 using MyPet.Models.Entidades;
 using MyPet.Repository.Interfaces;
+using MyPet.Services.EnderecoServices;
+using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -12,11 +11,13 @@ namespace MyPet.Controllers
     public class EnderecoController : ControllerBase
     {
         private readonly IEnderecoRepository _repository;
-        
-        public EnderecoController(IEnderecoRepository repository)
+        private readonly IEnderecoService _service;
+
+        public EnderecoController(IEnderecoRepository repository, IEnderecoService service)
         {
             _repository = repository;
-            
+            _service = service;
+
         }
 
         [HttpGet]
@@ -70,6 +71,19 @@ namespace MyPet.Controllers
             return NoContent();
         }
 
+        [HttpGet("{latitude}/{longitude}")]
+        public async Task<IActionResult> GetLocationByLatitudeLongitude(double latitude, double longitude)
+        {
+            var response = await _service.GetAdress(latitude, longitude);
+
+            if (response == null)
+            {
+                return BadRequest("Endereço não Localizado");
+            }
+
+            return Ok(response);
+
+        }
 
     }
 }

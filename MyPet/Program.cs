@@ -2,6 +2,7 @@ using MyPet.Repository;
 using MyPet.Repository.Context;
 using MyPet.Repository.Interfaces;
 using MyPet.Repository.TutorRepository;
+using MyPet.Services.EnderecoServices;
 using MyPet.Services.TutorServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpClient<ITutorService, TutorService>();
+builder.Services.AddHttpClient<IEnderecoService, EnderecoService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
