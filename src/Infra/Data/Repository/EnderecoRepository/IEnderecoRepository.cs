@@ -5,7 +5,7 @@ namespace MyPet.Infra.Data.Repository.EnderecoRepository
     public interface IEnderecoRepository
     {
         // Endereco
-        List<Endereco> GetEnderecos();
+        IEnumerable<Endereco> GetEnderecos(int? page, int? row, string? orderBy);
         Endereco CreateEndereco(Endereco endereco);
         public Endereco GetEnderecosByCep(string Cep);
         public Endereco GetEnderecoById(int id);

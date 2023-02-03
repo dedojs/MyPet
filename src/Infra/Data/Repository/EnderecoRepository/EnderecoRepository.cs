@@ -24,9 +24,23 @@ namespace MyPet.Infra.Data.Repository.EnderecoRepository
             return endereco;
         }
 
-        public List<Endereco> GetEnderecos()
+        public IEnumerable<Endereco> GetEnderecos(int? page, int? row, string? orderBy)
         {
-            return _context.Enderecos.ToList();
+            if (page == null)
+                page = 1;
+            if (row == null)
+                row = 20;
+            if (string.IsNullOrEmpty(orderBy))
+                orderBy = "id";
+
+            var listDataEnderecos = _context.Enderecos.OrderBy(t => t.EnderecoId);
+
+            if (orderBy == "name")
+                listDataEnderecos = _context.Enderecos.OrderBy(t => t.Localidade);
+
+            var listEnderecosFilter = listDataEnderecos.Skip((page.Value - 1) * row.Value).Take(row.Value).ToList();
+
+            return listEnderecosFilter.ToList();
         }
 
         public Endereco GetEnderecosByCep(string Cep)

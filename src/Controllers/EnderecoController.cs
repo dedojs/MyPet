@@ -22,9 +22,9 @@ namespace MyPet.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEnderecos()
+        public IActionResult GetEnderecos(int? page, int? row, string? orderBy)
         {
-            return Ok(_repository.GetEnderecos());   
+            return Ok(_repository.GetEnderecos(page, row, orderBy));   
         }
 
         [HttpGet("{cep}")]

@@ -91,9 +91,9 @@ public class PetRepository : IPetRepository
         if (orderBy == "name")
             listDataPets = listDataPets.OrderBy(p => p.Nome);
 
-        var listPetsFilter = listDataPets.Skip((page.Value - 1) * row.Value).Take(row.Value);
+        var listPetsFilter = listDataPets.Skip((page.Value - 1) * row.Value).Take(row.Value).ToList();
 
-        var listPetsDto = listPetsFilter.Select(p => _mapper.Map<PetDto>(p)).ToList();
+        var listPetsDto = listPetsFilter.Select(p => _mapper.Map<PetDto>(p));
 
         return listPetsDto;
     }
