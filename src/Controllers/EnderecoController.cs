@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Domain.Entidades;
+using MyPet.Application.Dtos.EnderecoDtos;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Services.EnderecoServices;
-using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -22,9 +21,9 @@ namespace MyPet.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEnderecos()
+        public IActionResult GetEnderecos(int? page, int? row, string? orderBy)
         {
-            return Ok(_repository.GetEnderecos());   
+            return Ok(_repository.GetEnderecos(page, row, orderBy));   
         }
 
         [HttpGet("{cep}")]
@@ -40,7 +39,7 @@ namespace MyPet.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEndereco([FromBody] Endereco request)
+        public IActionResult CreateEndereco([FromBody] CreateEnderecoDto request)
         {
             if (request == null)
             {

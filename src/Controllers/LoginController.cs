@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.PetDtos;
-using MyPet.Models.Dtos.TutorDtos;
-using MyPet.Domain.Entidades;
 using MyPet.Services.Token;
-using MyPet.Services.TutorServices;
 using MyPet.Infra.Data.Repository.TutorRepository;
+using MyPet.Application.Dtos.TutorDtos;
 
 namespace MyPet.Controllers
 {

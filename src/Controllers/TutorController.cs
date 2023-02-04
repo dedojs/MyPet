@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.PetDtos;
-using MyPet.Models.Dtos.TutorDtos;
-using MyPet.Domain.Entidades;
 using MyPet.Services.TutorServices;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Infra.Data.Repository.TutorRepository;
+using MyPet.Application.Dtos.TutorDtos;
 
 namespace MyPet.Controllers
 {
@@ -48,8 +46,9 @@ namespace MyPet.Controllers
             {
                 return BadRequest("Elemento Inválido");
             }
-            var cep = await _service.ValidateCep(request.Cep);
-            if (cep == null)
+            var enderecoDto = await _service.ValidateCep(request.Cep);
+
+            if (enderecoDto == null)
             {
                 return NotFound("Cep Inválido");
             }
@@ -60,7 +59,7 @@ namespace MyPet.Controllers
 
             if (endereco == null)
             {
-                _enderecoRepository.CreateEndereco(cep);
+                _enderecoRepository.CreateEndereco(enderecoDto);
             }
 
             return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
@@ -68,13 +67,27 @@ namespace MyPet.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public IActionResult UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
+        public async Task<IActionResult> UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
         {
             var tutor = _repository.GetTutor(id);
 
             if (tutor == null)
             {
                 return NotFound("Tutor não localizado");
+            }
+
+            var enderecoDto = await _service.ValidateCep(tutorDto.Cep);
+
+            if (enderecoDto == null)
+            {
+                return NotFound("Cep Inválido");
+            }
+
+            var endereco = _enderecoRepository.GetEnderecosByCep(tutorDto.Cep);
+
+            if (endereco == null)
+            {
+                _enderecoRepository.CreateEndereco(enderecoDto);
             }
 
             _repository.UpdateTutor(id, tutorDto);
