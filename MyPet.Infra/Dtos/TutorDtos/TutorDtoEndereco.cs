@@ -2,7 +2,7 @@
 
 namespace MyPet.Application.Dtos.TutorDtos
 {
-    public class TutorDtoSimple
+    public class TutorDtoEndereco
     {
         public int TutorId { get; set; }
         public string Nome { get; set; }

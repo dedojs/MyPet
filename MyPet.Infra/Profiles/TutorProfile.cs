@@ -10,7 +10,7 @@ namespace MyPet.Profiles
         {
             CreateMap<CreateTutorDto, Tutor>();
             CreateMap<Tutor, TutorDto>();
-            CreateMap<Tutor, TutorDtoSimple>();
+            CreateMap<Tutor, TutorDtoEndereco>();
             CreateMap<Tutor, TutorLoginDto>();
         }
     }

@@ -67,13 +67,27 @@ namespace MyPet.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public IActionResult UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
+        public async Task<IActionResult> UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
         {
             var tutor = _repository.GetTutor(id);
 
             if (tutor == null)
             {
                 return NotFound("Tutor não localizado");
+            }
+
+            var enderecoDto = await _service.ValidateCep(tutorDto.Cep);
+
+            if (enderecoDto == null)
+            {
+                return NotFound("Cep Inválido");
+            }
+
+            var endereco = _enderecoRepository.GetEnderecosByCep(tutorDto.Cep);
+
+            if (endereco == null)
+            {
+                _enderecoRepository.CreateEndereco(enderecoDto);
             }
 
             _repository.UpdateTutor(id, tutorDto);

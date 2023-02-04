@@ -12,6 +12,6 @@ namespace MyPet.Application.Dtos.PetDtos
         public DateTime DataNascimento { get; set; }
         public int Idade { get; set; }
         public int TutorId { get; set; }
-        public TutorDtoSimple? Tutor { get; set; }
+        public TutorDtoEndereco? Tutor { get; set; }
     }
 }

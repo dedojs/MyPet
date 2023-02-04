@@ -10,6 +10,7 @@ namespace MyPet.Api.Profiles
         public EnderecoProfile()
         {
             CreateMap<CreateEnderecoDto, Endereco>();
+            CreateMap<Endereco, EnderecoDto>();
         }
 
     }
