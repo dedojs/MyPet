@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<MyPetContext>();
+
 builder.Services.AddScoped<IMyPetContext, MyPetContext>();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
@@ -46,16 +47,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenConstants.Secret))
     };
 });
-
-// Adicionar POLICY CLAIMS
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy("Login", policy =>
-//    {
-//        policy.RequireClaim("tutorClaims", new string[] );
-//    });
-
-//});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
