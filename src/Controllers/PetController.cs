@@ -1,9 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.PetDtos;
 using MyPet.Utils;
 using MyPet.Infra.Data.Repository.PetRepository;
+using MyPet.Application.Dtos.PetDtos;
 
 namespace MyPet.Controllers
 {

@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyPet.Models.Dtos.PetDtos;
-using MyPet.Models.Dtos.TutorDtos;
-using MyPet.Domain.Entidades;
 using MyPet.Services.TutorServices;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Infra.Data.Repository.TutorRepository;
+using MyPet.Application.Dtos.TutorDtos;
 
 namespace MyPet.Controllers
 {
@@ -48,8 +46,9 @@ namespace MyPet.Controllers
             {
                 return BadRequest("Elemento Inválido");
             }
-            var cep = await _service.ValidateCep(request.Cep);
-            if (cep == null)
+            var enderecoDto = await _service.ValidateCep(request.Cep);
+
+            if (enderecoDto == null)
             {
                 return NotFound("Cep Inválido");
             }
@@ -60,7 +59,7 @@ namespace MyPet.Controllers
 
             if (endereco == null)
             {
-                _enderecoRepository.CreateEndereco(cep);
+                _enderecoRepository.CreateEndereco(enderecoDto);
             }
 
             return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
