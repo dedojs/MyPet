@@ -21,7 +21,7 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
         {
             var tutor = _mapper.Map<Tutor>(createTutorDto);
             _context.Tutores.Add(tutor);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
 
             var tutorDto = _mapper.Map<TutorDto>(tutor);
             
@@ -33,7 +33,7 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
             var tutor = _context.Tutores.FirstOrDefault(t => t.TutorId == id);
 
             _context.Tutores.Remove(tutor);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
         public TutorDto GetTutor(int id)
@@ -81,7 +81,7 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
             var tutor = _context.Tutores.FirstOrDefault(t => t.TutorId == id);
 
             _mapper.Map(tutorDto, tutor);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
         public Tutor ValidadeLoginTutor(TutorLoginDto tutorLogin)

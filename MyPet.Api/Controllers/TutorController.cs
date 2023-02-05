@@ -4,6 +4,7 @@ using MyPet.Services.TutorServices;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Infra.Data.Repository.TutorRepository;
 using MyPet.Application.Dtos.TutorDtos;
+using MyPet.Services.EnderecoServices;
 
 namespace MyPet.Controllers
 {
@@ -12,12 +13,12 @@ namespace MyPet.Controllers
     public class TutorController : ControllerBase
     {
         private readonly ITutorRepository _repository;
-        private readonly IEnderecoRepository _enderecoRepository;
+        private readonly IEnderecoService _enderecoService;
         private readonly ITutorService _service;
-        public TutorController(ITutorRepository repository, ITutorService tutorService, IEnderecoRepository enderecoRepository)
+        public TutorController(ITutorRepository repository, ITutorService tutorService, IEnderecoService enderecoService)
         {
             _service = tutorService;
-            _enderecoRepository = enderecoRepository;
+            _enderecoService = enderecoService;
             _repository = repository;
         }
 
@@ -48,18 +49,26 @@ namespace MyPet.Controllers
             }
             var enderecoDto = await _service.ValidateCep(request.Cep);
 
-            if (enderecoDto == null)
+            if (enderecoDto == null || enderecoDto.Localidade == null)
             {
                 return NotFound("Cep Inválido");
             }
 
             var response = _repository.CreateTutor(request);
 
-            var endereco = _enderecoRepository.GetEnderecosByCep(request.Cep);
+            var endereco = _enderecoService.GetEnderecosByCep(request.Cep);
 
             if (endereco == null)
             {
-                _enderecoRepository.CreateEndereco(enderecoDto);
+                try
+                {
+                    _enderecoService.CreateEndereco(enderecoDto);
+                }
+                catch(ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+                
             }
 
             return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
@@ -83,11 +92,11 @@ namespace MyPet.Controllers
                 return NotFound("Cep Inválido");
             }
 
-            var endereco = _enderecoRepository.GetEnderecosByCep(tutorDto.Cep);
+            var endereco = _enderecoService.GetEnderecosByCep(tutorDto.Cep);
 
             if (endereco == null)
             {
-                _enderecoRepository.CreateEndereco(enderecoDto);
+                _enderecoService.CreateEndereco(enderecoDto);
             }
 
             _repository.UpdateTutor(id, tutorDto);
