@@ -10,26 +10,25 @@ namespace MyPet.Controllers
     [Route("[controller]")]
     public class EnderecoController : ControllerBase
     {
-        private readonly IEnderecoRepository _repository;
         private readonly IEnderecoService _service;
 
-        public EnderecoController(IEnderecoRepository repository, IEnderecoService service)
+        public EnderecoController(IEnderecoService service)
         {
-            _repository = repository;
             _service = service;
 
         }
 
         [HttpGet]
-        public IActionResult GetEnderecos(int? page, int? row, string? orderBy)
+        public async Task<IActionResult> GetEnderecos(int? page, int? row, string? orderBy)
         {
-            return Ok(_repository.GetEnderecos(page, row, orderBy));   
+            var result = await _service.GetEnderecos(page, row, orderBy);
+            return Ok(result);   
         }
 
         [HttpGet("{cep}")]
-        public IActionResult GetEnderecosByCep(string cep)
+        public async Task<IActionResult> GetEnderecosByCep(string cep)
         {
-            var endereco = _repository.GetEnderecosByCep(cep);
+            var endereco = await _service.GetEnderecosByCep(cep);
             if (endereco == null)
             {
                 return NotFound("Endereço não localizado");
@@ -39,14 +38,14 @@ namespace MyPet.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEndereco([FromBody] CreateEnderecoDto request)
+        public async Task<IActionResult> CreateEndereco([FromBody] CreateEnderecoDto request)
         {
             if (request == null)
             {
                 return BadRequest("Elemento Inválido");
             }
 
-            var response = _repository.CreateEndereco(request);
+            var response = await _service.CreateEndereco(request);
 
             if (response == null)
             {
@@ -58,16 +57,16 @@ namespace MyPet.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult DeleteEndereco(int id)
+        public async Task<IActionResult> DeleteEndereco(int id)
         {
-            var endereco = _repository.GetEnderecoById(id);
+            var endereco = await _service.GetEnderecoById(id);
 
             if (endereco == null)
             {
                 return NotFound("Endereco inválido");
             }
 
-            _repository.DeleteEndereco(id);
+            await _service.DeleteEndereco(id);
 
             return NoContent();
         }

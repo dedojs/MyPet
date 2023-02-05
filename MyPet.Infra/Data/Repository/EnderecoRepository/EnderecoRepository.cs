@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MyPet.Application.Dtos.EnderecoDtos;
 using MyPet.Domain.Entidades;
 using MyPet.Infra.Data.Context;
@@ -17,19 +18,15 @@ namespace MyPet.Infra.Data.Repository.EnderecoRepository
             _mapper = mapper;
         }
 
-        public EnderecoDto CreateEndereco(CreateEnderecoDto createEnderecoDto)
+        public async Task<Endereco> CreateEndereco(Endereco createEndereco)
         {
-            var endereco = _mapper.Map<Endereco>(createEnderecoDto);
+            _context.Enderecos.Add(createEndereco);
+            await _context.SaveChangesAsync();
 
-            _context.Enderecos.Add(endereco);
-            _context.SaveChanges();
-
-            var enderecoDto = _mapper.Map<EnderecoDto>(endereco);
-
-            return enderecoDto;
+            return createEndereco;
         }
 
-        public IEnumerable<EnderecoDto> GetEnderecos(int? page, int? row, string? orderBy)
+        public async Task<IEnumerable<Endereco>> GetEnderecos(int? page, int? row, string? orderBy)
         {
             if (page == null)
                 page = 1;
@@ -43,43 +40,34 @@ namespace MyPet.Infra.Data.Repository.EnderecoRepository
             if (orderBy == "name")
                 listDataEnderecos = _context.Enderecos.OrderBy(t => t.Localidade);
 
-            var listEnderecosFilter = listDataEnderecos.Skip((page.Value - 1) * row.Value).Take(row.Value).ToList();
+            var listEnderecosFilter = listDataEnderecos.Skip((page.Value - 1) * row.Value).Take(row.Value);
 
-            var listEnderecosDto = listEnderecosFilter.Select(e => _mapper.Map<EnderecoDto>(e));
-
-            return listEnderecosDto.ToList();
+            return await listEnderecosFilter.ToListAsync();
         }
 
-        public EnderecoDto GetEnderecosByCep(string Cep)
+        public async Task<Endereco> GetEnderecosByCep(string cep)
         {
-            var cep = Cep.Insert(5, "-");
-            var endereco = _context.Enderecos.FirstOrDefault(e => e.Cep == cep);
+            var endereco = await _context.Enderecos.FirstOrDefaultAsync(e => e.Cep == cep);
 
-            var enderecoDto = _mapper.Map<EnderecoDto>(endereco);
-
-            return enderecoDto;
+            return endereco;
         }
 
-        public EnderecoDto GetEnderecoById(int id)
+        public async Task<Endereco> GetEnderecoById(int id)
         {
-            var endereco = _context.Enderecos.FirstOrDefault(e => e.EnderecoId == id);
+            var endereco = await _context.Enderecos.FirstOrDefaultAsync(e => e.EnderecoId == id);
 
             if (endereco == null)
             {
                 return null;
             }
 
-            var enderecoDto = _mapper.Map<EnderecoDto>(endereco);
-
-            return enderecoDto;
+            return endereco;
         }
 
-        public void DeleteEndereco(int id)
+        public async Task DeleteEndereco(Endereco endereco)
         {
-            var endereco = _context.Enderecos.FirstOrDefault(c => c.EnderecoId == id);
-
             _context.Enderecos.Remove(endereco);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

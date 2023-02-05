@@ -3,7 +3,7 @@ using MyPet.Domain.Entidades;
 
 namespace MyPet.Infra.Data.Context
 {
-    public class MyPetContext : DbContext, IMyPetContext
+    public class MyPetContext : DbContext
     {
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Tutor> Tutores { get; set; }
