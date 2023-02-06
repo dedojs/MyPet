@@ -2,7 +2,7 @@
 using MyPet.Domain.Entidades;
 using MyPet.Infra.Data.Context;
 using MyPet.Application.Dtos.TutorDtos;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace MyPet.Infra.Data.Repository.TutorRepository
 {
@@ -17,45 +17,33 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
             _mapper = mapper;
         }
 
-        public TutorDto CreateTutor(CreateTutorDto createTutorDto)
+        public async Task<Tutor> CreateTutor(Tutor tutor)
         {
-            var tutor = _mapper.Map<Tutor>(createTutorDto);
             _context.Tutores.Add(tutor);
-            _context.SaveChangesAsync();
-
-            var tutorDto = _mapper.Map<TutorDto>(tutor);
+            await _context.SaveChangesAsync();
             
-            return tutorDto;
+            return tutor;
         }
 
-        public void DeleteTutor(int id)
+        public async Task DeleteTutor(Tutor tutor)
         {
-            var tutor = _context.Tutores.FirstOrDefault(t => t.TutorId == id);
-
             _context.Tutores.Remove(tutor);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
-        public TutorDto GetTutor(int id)
+        public async Task<Tutor> GetTutor(int id)
         {
-            var tutor = _context.Tutores.FirstOrDefault(t => t.TutorId == id);
+            var tutor = await _context.Tutores.FirstOrDefaultAsync(t => t.TutorId == id);
 
             if (tutor == null)
             {
                 return null;
             }
 
-            var cep = tutor.Cep.Insert(5, "-");
-            var endereco = _context.Enderecos.FirstOrDefault(e => e.Cep == cep);
-            
-            var tutorDto = _mapper.Map<TutorDto>(tutor);
-
-            tutorDto.Endereco = endereco;
-
-            return tutorDto;
+            return tutor;
         }
 
-        public IEnumerable<TutorDto> GetTutores(int? page, int? row, string? orderBy)
+        public async Task<IEnumerable<Tutor>> GetTutores(int? page, int? row, string? orderBy)
         {
             if (page == null)
                 page = 1;
@@ -69,26 +57,23 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
             if (orderBy == "name")
                 listDataTutores = _context.Tutores.OrderBy(t => t.Nome);
 
-            var listTutorsFilter = listDataTutores.Skip((page.Value - 1) * row.Value).Take(row.Value).ToList();
+            var listTutorsFilter = listDataTutores.Skip((page.Value - 1) * row.Value).Take(row.Value);
 
-            var listTutoesDto = listTutorsFilter.Select(t => _mapper.Map<TutorDto>(t));
-
-            return listTutoesDto;
+            return await listTutorsFilter.ToListAsync();
         }
 
-        public void UpdateTutor(int id, CreateTutorDto tutorDto)
+        public async Task UpdateTutor(Tutor tutor)
         {
-            var tutor = _context.Tutores.FirstOrDefault(t => t.TutorId == id);
-
-            _mapper.Map(tutorDto, tutor);
-            _context.SaveChangesAsync();
+            _context.Tutores.Update(tutor);
+            await _context.SaveChangesAsync();
         }
 
-        public Tutor ValidadeLoginTutor(TutorLoginDto tutorLogin)
+        public async Task<Tutor> ValidadeLoginTutor(Tutor tutorLogin)
         {
-            var tutor = _context.Tutores.FirstOrDefault(t => t.Email == tutorLogin.Email && t.Password == tutorLogin.Password);
+            var tutor = await _context.Tutores.FirstOrDefaultAsync(t => t.Email == tutorLogin.Email && t.Password == tutorLogin.Password);
 
-            if (tutor == null) return null;
+            if (tutor == null)
+                return null;
 
             return tutor;
         }

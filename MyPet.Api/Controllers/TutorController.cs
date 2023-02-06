@@ -12,26 +12,25 @@ namespace MyPet.Controllers
     [Route("[controller]")]
     public class TutorController : ControllerBase
     {
-        private readonly ITutorRepository _repository;
         private readonly IEnderecoService _enderecoService;
         private readonly ITutorService _service;
-        public TutorController(ITutorRepository repository, ITutorService tutorService, IEnderecoService enderecoService)
+        public TutorController(ITutorService tutorService, IEnderecoService enderecoService)
         {
             _service = tutorService;
             _enderecoService = enderecoService;
-            _repository = repository;
         }
 
         [HttpGet]
-        public IActionResult GetTutores(int? page, int? row, string? orderBy)
+        public async Task<IActionResult> GetTutores(int? page, int? row, string? orderBy)
         {
-            return Ok(_repository.GetTutores(page, row, orderBy));
+            var result = await _service.GetTutores(page, row, orderBy);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetTutor(int id)
+        public async Task<IActionResult> GetTutor(int id)
         {
-            var tutor = _repository.GetTutor(id);
+            var tutor = await _service.GetTutor(id);
             if (tutor == null)
             {
                 return NotFound("Tutor não localizado");
@@ -47,6 +46,7 @@ namespace MyPet.Controllers
             {
                 return BadRequest("Elemento Inválido");
             }
+
             var enderecoDto = await _service.ValidateCep(request.Cep);
 
             if (enderecoDto == null || enderecoDto.Localidade == null)
@@ -54,15 +54,15 @@ namespace MyPet.Controllers
                 return NotFound("Cep Inválido");
             }
 
-            var response = _repository.CreateTutor(request);
+            var response = await _service.CreateTutor(request);
 
-            var endereco = _enderecoService.GetEnderecosByCep(request.Cep);
+            var endereco = await _enderecoService.GetEnderecosByCep(request.Cep);
 
             if (endereco == null)
             {
                 try
                 {
-                    _enderecoService.CreateEndereco(enderecoDto);
+                   await _enderecoService.CreateEndereco(enderecoDto);
                 }
                 catch(ArgumentException ex)
                 {
@@ -78,7 +78,7 @@ namespace MyPet.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
         {
-            var tutor = _repository.GetTutor(id);
+            var tutor = await _service.GetTutor(id);
 
             if (tutor == null)
             {
@@ -87,7 +87,7 @@ namespace MyPet.Controllers
 
             var enderecoDto = await _service.ValidateCep(tutorDto.Cep);
 
-            if (enderecoDto == null)
+            if (enderecoDto == null || enderecoDto.Localidade == null)
             {
                 return NotFound("Cep Inválido");
             }
@@ -96,25 +96,32 @@ namespace MyPet.Controllers
 
             if (endereco == null)
             {
-                _enderecoService.CreateEndereco(enderecoDto);
+                try
+                {
+                    await _enderecoService.CreateEndereco(enderecoDto);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
 
-            _repository.UpdateTutor(id, tutorDto);
+            await _service.UpdateTutor(tutorDto);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult DeleteTutor(int id)
+        public async Task<IActionResult> DeleteTutor(int id)
         {
-            var tutor = _repository.GetTutor(id);
+            var tutorDto = await _service.GetTutor(id);
 
-            if (tutor == null)
+            if (tutorDto == null)
             {
                 return NotFound("Tutor não localizado");
             }
-            _repository.DeleteTutor(id);
+            await _service.DeleteTutor(tutorDto);
 
             return NoContent();
         }

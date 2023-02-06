@@ -10,12 +10,10 @@ namespace MyPet.Infra.Data.Repository.EnderecoRepository
     public class EnderecoRepository : IEnderecoRepository
     {
         private readonly IMyPetContext _context;
-        private readonly IMapper _mapper;
 
-        public EnderecoRepository(IMyPetContext context, IMapper mapper)
+        public EnderecoRepository(IMyPetContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<Endereco> CreateEndereco(Endereco createEndereco)

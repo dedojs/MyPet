@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyPet.Services.Token;
 using MyPet.Infra.Data.Repository.TutorRepository;
 using MyPet.Application.Dtos.TutorDtos;
+using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -9,16 +10,16 @@ namespace MyPet.Controllers
     [Route("[controller]")]
     public class LoginController : ControllerBase
     {
-        private readonly ITutorRepository _repository;
-        public LoginController(ITutorRepository repository)
+        private readonly ITutorService _service;
+        public LoginController(ITutorService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] TutorLoginDto tutorLogin)
+        public async Task<IActionResult> Login([FromBody] TutorLoginDto tutorLogin)
         {
-            var tutor = _repository.ValidadeLoginTutor(tutorLogin);
+            var tutor = await _service.ValidadeLoginTutor(tutorLogin);
 
             if (tutor == null)
             {
