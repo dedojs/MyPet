@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyPet.Application.Dtos.EnderecoDtos;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Services.EnderecoServices;
+using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -40,12 +41,24 @@ namespace MyPet.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEndereco([FromBody] CreateEnderecoDto request)
         {
+            EnderecoDto response = new();
+
             if (request == null)
             {
                 return BadRequest("Elemento Inválido");
             }
 
-            var response = await _service.CreateEndereco(request);
+            var cep = request.Cep.Split("-");
+            var cep1 = $"{cep[0]}{cep[1]}";
+
+            var endereco = await _service.GetEnderecosByCep(cep1);
+
+            if (endereco == null)
+                response = await _service.CreateEndereco(request);
+
+            if (endereco != null)
+                return BadRequest("Endereço já cadastrado!");
+             
 
             if (response == null)
             {
