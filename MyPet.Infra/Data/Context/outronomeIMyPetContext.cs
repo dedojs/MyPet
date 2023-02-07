@@ -8,7 +8,8 @@ namespace MyPet.Infra.Data.Context
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Tutor> Tutores { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
-        public Task<int> SaveChangesAsync();
+
+
 
     }
 }

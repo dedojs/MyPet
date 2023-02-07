@@ -76,23 +76,21 @@ namespace MyPet.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateTutor(int id, [FromBody] CreateTutorDto tutorDto)
+        public async Task<IActionResult> UpdateTutor(int id, [FromBody] CreateTutorDto createTutorDto)
         {
-            var tutor = await _service.GetTutor(id);
+            var tutor = await _service.UpdateTutor(id, createTutorDto);
 
-            if (tutor == null)
-            {
+            if (tutor == false)
                 return NotFound("Tutor não localizado");
-            }
 
-            var enderecoDto = await _service.ValidateCep(tutorDto.Cep);
+            var enderecoDto = await _service.ValidateCep(createTutorDto.Cep);
 
             if (enderecoDto == null || enderecoDto.Localidade == null)
             {
                 return NotFound("Cep Inválido");
             }
 
-            var endereco = _enderecoService.GetEnderecosByCep(tutorDto.Cep);
+            var endereco = _enderecoService.GetEnderecosByCep(createTutorDto.Cep);
 
             if (endereco == null)
             {
@@ -106,8 +104,6 @@ namespace MyPet.Controllers
                 }
             }
 
-            await _service.UpdateTutor(tutorDto);
-
             return NoContent();
         }
 
@@ -115,13 +111,12 @@ namespace MyPet.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteTutor(int id)
         {
-            var tutorDto = await _service.GetTutor(id);
+            var tutorDto = await _service.DeleteTutor(id);
 
             if (tutorDto == null)
             {
                 return NotFound("Tutor não localizado");
             }
-            await _service.DeleteTutor(tutorDto);
 
             return NoContent();
         }

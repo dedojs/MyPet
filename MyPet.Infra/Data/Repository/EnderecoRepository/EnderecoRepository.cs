@@ -9,9 +9,9 @@ namespace MyPet.Infra.Data.Repository.EnderecoRepository
 {
     public class EnderecoRepository : IEnderecoRepository
     {
-        private readonly IMyPetContext _context;
+        private readonly MyPetContext _context;
 
-        public EnderecoRepository(IMyPetContext context)
+        public EnderecoRepository(MyPetContext context)
         {
             _context = context;
         }

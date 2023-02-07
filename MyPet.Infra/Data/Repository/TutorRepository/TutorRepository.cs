@@ -8,13 +8,11 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
 {
     public class TutorRepository : ITutorRepository
     {
-        private readonly IMyPetContext _context;
-        private readonly IMapper _mapper;
+        private readonly MyPetContext _context;
 
-        public TutorRepository(IMyPetContext context, IMapper mapper)
+        public TutorRepository(MyPetContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<Tutor> CreateTutor(Tutor tutor)

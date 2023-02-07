@@ -70,6 +70,20 @@ namespace MyPet.Services.TutorServices
             return tutorDto;
         }
 
+        public async Task<TutorDto> GetSimpleTutor(int id)
+        {
+            var tutor = await _repository.GetTutor(id);
+
+            if (tutor == null)
+            {
+                return null;
+            }
+
+            var tutorDto = _mapper.Map<TutorDto>(tutor);
+
+            return tutorDto;
+        }
+
         public async Task<TutorDto> CreateTutor(CreateTutorDto createTutorDto)
         {
             var tutor = _mapper.Map<Tutor>(createTutorDto);
@@ -81,18 +95,32 @@ namespace MyPet.Services.TutorServices
             return tutorDto;
         }
 
-        public async Task UpdateTutor(CreateTutorDto tutorDto)
+        public async Task<bool> UpdateTutor(int id, CreateTutorDto createTutorDto)
         {
-            var tutor = _mapper.Map<Tutor>(tutorDto);
+            var findTutor = await _repository.GetTutor(id);
 
-            await _repository.UpdateTutor(tutor);
+            if (findTutor == null)
+                return false;
+
+            var tutorUpdate = _mapper.Map(createTutorDto, findTutor);
+
+            await _repository.UpdateTutor(tutorUpdate);
+
+            return true;
         }
 
-        public async Task DeleteTutor(TutorDto tutorDto)
+        public async Task<TutorDto> DeleteTutor(int id)
         {
-            var tutor = _mapper.Map<Tutor>(tutorDto);
+            var tutor = await _repository.GetTutor(id);
+
+            if (tutor == null)
+                return null;
 
             await _repository.DeleteTutor(tutor);
+
+            var tutorDto = _mapper.Map<TutorDto>(tutor);
+
+            return tutorDto;
         }
 
         public async Task<Tutor> ValidadeLoginTutor(TutorLoginDto tutorLogin)

@@ -17,16 +17,23 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<MyPetContext>();
 
-builder.Services.AddScoped<IMyPetContext, MyPetContext>();
+//builder.Services.AddScoped<MyPetContext>();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+
+builder.Services.AddScoped<IPetService, PetService>();
+builder.Services.AddScoped<ITutorService, TutorService>();
+builder.Services.AddScoped<IEnderecoService, EnderecoService>();
+
+
 
 // Add Mapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpClient<ITutorService, TutorService>();
 builder.Services.AddHttpClient<IEnderecoService, EnderecoService>();
+builder.Services.AddHttpClient<IPetService, PetService>();
 
 // Add services Token
 builder.Services.AddAuthentication(options =>
