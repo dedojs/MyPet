@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MyPet.Application.Dtos.EnderecoDtos
+﻿namespace MyPet.Application.Dtos.EnderecoDtos
 {
     public class CreateEnderecoDto
     {

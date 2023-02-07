@@ -10,12 +10,10 @@ namespace MyPet.Utils
     {
         private static byte[] BitmapToBytes(Bitmap img)
         {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            using var stream = new MemoryStream();
+            img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
 
-                return stream.ToArray();
-            }
+            return stream.ToArray();
         }
 
         public static byte[] CreateQrCode(PetDtoWithTutor info)

@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MyPet.Domain.Entidades;
 using MyPet.Infra.Data.Context;
-using MyPet.Application.Dtos.PetDtos;
 
 namespace MyPet.Infra.Data.Repository.PetRepository;
 

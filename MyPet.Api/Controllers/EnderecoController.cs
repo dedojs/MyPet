@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyPet.Application.Dtos.EnderecoDtos;
-using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Services.EnderecoServices;
-using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -39,6 +37,7 @@ namespace MyPet.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateEndereco([FromBody] CreateEnderecoDto request)
         {
             EnderecoDto response = new();

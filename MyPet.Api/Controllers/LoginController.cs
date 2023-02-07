@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using MyPet.Services.Token;
-using MyPet.Infra.Data.Repository.TutorRepository;
 using MyPet.Application.Dtos.TutorDtos;
 using MyPet.Services.TutorServices;
 

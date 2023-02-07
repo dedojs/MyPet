@@ -1,5 +1,4 @@
-﻿using MyPet.Application.Dtos.PetDtos;
-using MyPet.Domain.Entidades;
+﻿using MyPet.Domain.Entidades;
 
 namespace MyPet.Infra.Data.Repository.PetRepository;
 

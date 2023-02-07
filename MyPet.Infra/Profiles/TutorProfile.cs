@@ -13,7 +13,6 @@ namespace MyPet.Profiles
             CreateMap<Tutor, TutorDtoEndereco>();
             CreateMap<Tutor, TutorLoginDto>();
             CreateMap<TutorLoginDto, Tutor>();
-            //CreateMap<TutorDto, Tutor>();
         }
     }
 }

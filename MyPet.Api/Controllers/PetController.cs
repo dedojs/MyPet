@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyPet.Utils;
-using MyPet.Infra.Data.Repository.PetRepository;
 using MyPet.Application.Dtos.PetDtos;
 using MyPet.Services.TutorServices;
 

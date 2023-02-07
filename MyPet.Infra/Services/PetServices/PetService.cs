@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using MyPet.Application.Dtos.EnderecoDtos;
 using MyPet.Application.Dtos.PetDtos;
-using MyPet.Application.Dtos.TutorDtos;
 using MyPet.Domain.Entidades;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Infra.Data.Repository.PetRepository;
 using MyPet.Infra.Data.Repository.TutorRepository;
-using System.Net.Http.Json;
 
 namespace MyPet.Services.TutorServices
 {

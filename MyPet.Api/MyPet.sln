@@ -5,9 +5,11 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPet.Api", "MyPet.Api.csproj", "{EC8FC64C-46ED-4CD8-8C0A-E5D3E5228D00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPet.Domain", "..\MyPet.Domain\MyPet.Domain.csproj", "{B48AE3F3-D512-4B78-B171-B0AE8FB165B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPet.Domain", "..\MyPet.Domain\MyPet.Domain.csproj", "{B48AE3F3-D512-4B78-B171-B0AE8FB165B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPet.Infra", "..\MyPet.Infra\MyPet.Infra.csproj", "{EA5FC68E-8308-4ACD-87B6-961B9104E979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyPet.Infra", "..\MyPet.Infra\MyPet.Infra.csproj", "{EA5FC68E-8308-4ACD-87B6-961B9104E979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPet.Tests", "..\MyPet.Tests\MyPet.Tests.csproj", "{468BABC1-35FE-4906-A547-5FB2B28DC7D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{EA5FC68E-8308-4ACD-87B6-961B9104E979}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA5FC68E-8308-4ACD-87B6-961B9104E979}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA5FC68E-8308-4ACD-87B6-961B9104E979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{468BABC1-35FE-4906-A547-5FB2B28DC7D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{468BABC1-35FE-4906-A547-5FB2B28DC7D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{468BABC1-35FE-4906-A547-5FB2B28DC7D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{468BABC1-35FE-4906-A547-5FB2B28DC7D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

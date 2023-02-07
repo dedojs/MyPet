@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using MyPet.Application.Dtos.EnderecoDtos;
+﻿using Microsoft.EntityFrameworkCore;
 using MyPet.Domain.Entidades;
 using MyPet.Infra.Data.Context;
 

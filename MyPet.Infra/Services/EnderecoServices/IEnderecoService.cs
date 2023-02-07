@@ -1,5 +1,4 @@
 ﻿using MyPet.Application.Dtos.EnderecoDtos;
-using MyPet.Domain.Entidades;
 
 namespace MyPet.Services.EnderecoServices
 {
