@@ -89,16 +89,30 @@ namespace MyPet.Services.TutorServices
             return petDto;
         }
 
-        public async Task UpdatePet(CreatePetDto createPetDto)
+        public async Task<bool> UpdatePet(int id, CreatePetDto createPetDto)
         {
-            var pet = _mapper.Map<Pet>(createPetDto);
-            await _repository.UpdatePet(pet);
+            var findPet = await _repository.GetPet(id);
+
+            if (findPet == null)
+                return false;
+
+            var petUpdate = _mapper.Map(createPetDto, findPet);
+
+            await _repository.UpdatePet(petUpdate);
+
+            return true;
         }
 
-        public async Task DeletePet(PetDto petDto)
+        public async Task<bool> DeletePet(int id)
         {
-            var pet = _mapper.Map<Pet>(petDto);
+            var pet = await _repository.GetPet(id);
+
+            if (pet == null)
+                return false;
+
             await _repository.DeletePet(pet);
+
+            return true;
         }
     }
 }

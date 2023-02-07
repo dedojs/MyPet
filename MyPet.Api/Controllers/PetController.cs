@@ -60,16 +60,14 @@ namespace MyPet.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public IActionResult UpdatePet(int id, [FromBody] CreatePetDto createPetDto)
+        public async Task<IActionResult> UpdatePet(int id, [FromBody] CreatePetDto createPetDto)
         {
-            var petDto = _service.GetPet(id);
+            var petDto = await _service.UpdatePet(id, createPetDto);
 
             if (petDto == null)
             {
                 return NotFound("Pet não localizado");
             }
-
-            _service.UpdatePet(createPetDto);
 
             return NoContent();
         }
@@ -78,13 +76,12 @@ namespace MyPet.Controllers
         [Authorize]
         public async Task<IActionResult> DeletePet(int id)
         {
-            var petDto = await _service.GetPet(id);
+            var petDto = await _service.DeletePet(id);
 
-            if (petDto == null)
+            if (petDto == false)
             {
                 return NotFound("Pet não localizado");
             }
-            await _service.DeletePet(petDto);
 
             return NoContent();
         }

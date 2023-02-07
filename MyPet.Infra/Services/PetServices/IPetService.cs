@@ -9,7 +9,7 @@ namespace MyPet.Services.TutorServices
         Task<PetDto> GetPet(int id);
         Task<PetDtoWithTutor> GetPetWithTutor(int id);
         Task<PetDto> CreatePet(CreatePetDto createPetDto);
-        Task UpdatePet(CreatePetDto createPetDto);
-        Task DeletePet(PetDto petDto);
+        Task<bool> UpdatePet(int id, CreatePetDto createPetDto);
+        Task<bool> DeletePet(int id);
     }
 }

@@ -56,20 +56,7 @@ namespace MyPet.Controllers
 
             var response = await _service.CreateTutor(request);
 
-            var endereco = await _enderecoService.GetEnderecosByCep(request.Cep);
-
-            if (endereco == null)
-            {
-                try
-                {
-                   await _enderecoService.CreateEndereco(enderecoDto);
-                }
-                catch(ArgumentException ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-                
-            }
+            var endereco = await _enderecoService.CreateEndereco(enderecoDto);
 
             return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
         }
@@ -89,20 +76,7 @@ namespace MyPet.Controllers
             {
                 return NotFound("Cep Inválido");
             }
-
-            var endereco = _enderecoService.GetEnderecosByCep(createTutorDto.Cep);
-
-            if (endereco == null)
-            {
-                try
-                {
-                    await _enderecoService.CreateEndereco(enderecoDto);
-                }
-                catch (ArgumentException ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-            }
+            await _enderecoService.CreateEndereco(enderecoDto);
 
             return NoContent();
         }
