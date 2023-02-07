@@ -8,76 +8,40 @@ namespace MyPet.Infra.Data.Repository.PetRepository;
 
 public class PetRepository : IPetRepository
 {
-    private readonly IMyPetContext _context;
-    private readonly IMapper _mapper;
+    private readonly MyPetContext _context;
 
-    public PetRepository(IMyPetContext context, IMapper mapper)
+    public PetRepository(MyPetContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
-    public PetDto CreatePet(CreatePetDto createPetDto)
+    public async Task<Pet> CreatePet(Pet pet)
     {
-        var tutor = _context.Tutores.FirstOrDefault(t => t.TutorId == createPetDto.TutorId);
-
-        if (tutor == null)
-        {
-            return null;
-        }
-
-        var pet = _mapper.Map<Pet>(createPetDto);
         _context.Pets.Add(pet);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
-        var petDto = _mapper.Map<PetDto>(pet);
-
-        return petDto;
+        return pet;
     }
 
-    public void DeletePet(int id)
+    public async Task DeletePet(Pet pet)
     {
-        var pet = _context.Pets.FirstOrDefault(pet => pet.PetId == id);
-
         _context.Pets.Remove(pet);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public PetDto GetPet(int id)
+    public async Task<Pet> GetPet(int id)
     {
-        var pet = _context.Pets.FirstOrDefault(pet => pet.PetId == id);
+        var pet = await _context.Pets.FirstOrDefaultAsync(pet => pet.PetId == id);
 
         if (pet == null)
         {
             return null;
         }
 
-        var petDto = _mapper.Map<PetDto>(pet);
-       
-        return petDto;
+        return pet;
     }
 
-    public PetDtoWithTutor GetPetWithTutor(int id)
-    {
-        var pet = _context.Pets.FirstOrDefault(pet => pet.PetId == id);
-
-        if (pet == null)
-        {
-            return null;
-        }
-
-        var petDtoWithTutor = _mapper.Map<PetDtoWithTutor>(pet);
-
-        var cep = pet.Tutor.Cep.Insert(5, "-");
-
-        var endereco = _context.Enderecos.FirstOrDefault(t => t.Cep == cep);
-        
-        petDtoWithTutor.Tutor.Endereco = endereco;
-
-        return petDtoWithTutor;
-    }
-
-    public IEnumerable<PetDto> GetPets(int? page, int? row, string? orderBy)
+    public async Task<IEnumerable<Pet>> GetPets(int? page, int? row, string? orderBy)
     {
         if (page == null)
             page = 1;
@@ -91,18 +55,14 @@ public class PetRepository : IPetRepository
         if (orderBy == "name")
             listDataPets = listDataPets.OrderBy(p => p.Nome);
 
-        var listPetsFilter = listDataPets.Skip((page.Value - 1) * row.Value).Take(row.Value).ToList();
+        var listPetsFilter = listDataPets.Skip((page.Value - 1) * row.Value).Take(row.Value);
 
-        var listPetsDto = listPetsFilter.Select(p => _mapper.Map<PetDto>(p));
-
-        return listPetsDto;
+        return await listPetsFilter.ToListAsync();
     }
 
-    public void UpdatePet(int id, CreatePetDto petDto)
+    public async Task UpdatePet(Pet pet)
     {
-        var pet = _context.Pets.FirstOrDefault(p => p.PetId == id);
-
-        _mapper.Map(petDto, pet);
-        _context.SaveChanges();
+        _context.Pets.Update(pet);
+        await _context.SaveChangesAsync();
     }
 }

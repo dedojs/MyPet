@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyPet.Utils;
 using MyPet.Infra.Data.Repository.PetRepository;
 using MyPet.Application.Dtos.PetDtos;
+using MyPet.Services.TutorServices;
 
 namespace MyPet.Controllers
 {
@@ -11,24 +12,25 @@ namespace MyPet.Controllers
     [Route("[controller]")]
     public class PetController : ControllerBase
     {
-        private readonly IPetRepository _repository;
+        private readonly IPetService _service;
         
-        public PetController(IPetRepository repository)
+        public PetController(IPetService service)
         {
-            _repository = repository;
+            _service = service;
             
         }
 
         [HttpGet]
-        public IActionResult GetPets(int? page, int? row, string? orderBy)
+        public async Task<IActionResult> GetPets(int? page, int? row, string? orderBy)
         {
-            return Ok(_repository.GetPets(page, row, orderBy));   
+            var result = await _service.GetPets(page, row, orderBy);
+            return Ok(result);   
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetPet(int id)
+        public async Task<IActionResult> GetPet(int id)
         {
-            var pet = _repository.GetPet(id);
+            var pet = await _service.GetPet(id);
             if (pet == null)
             {
                 return NotFound("Pet não localizado");
@@ -39,14 +41,14 @@ namespace MyPet.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult CreatePet([FromBody] CreatePetDto request)
+        public async Task<IActionResult> CreatePet([FromBody] CreatePetDto request)
         {
             if (request == null)
             {
                 return BadRequest("Elemento Inválido");
             }
 
-            var response = _repository.CreatePet(request);
+            var response = await _service.CreatePet(request);
 
             if (response == null)
             {
@@ -58,39 +60,39 @@ namespace MyPet.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public IActionResult UpdatePet(int id, [FromBody] CreatePetDto petDto)
+        public IActionResult UpdatePet(int id, [FromBody] CreatePetDto createPetDto)
         {
-            var pet = _repository.GetPet(id);
+            var petDto = _service.GetPet(id);
 
-            if (pet == null)
+            if (petDto == null)
             {
                 return NotFound("Pet não localizado");
             }
 
-            _repository.UpdatePet(id, petDto);
+            _service.UpdatePet(createPetDto);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult DeletePet(int id)
+        public async Task<IActionResult> DeletePet(int id)
         {
-            var pet = _repository.GetPet(id);
+            var petDto = await _service.GetPet(id);
 
-            if (pet == null)
+            if (petDto == null)
             {
                 return NotFound("Pet não localizado");
             }
-            _repository.DeletePet(id);
+            await _service.DeletePet(petDto);
 
             return NoContent();
         }
 
         [HttpGet("qrcode/{id}")]
-        public IActionResult GenerateQrCode(int id)
+        public async Task<IActionResult> GenerateQrCode(int id)
         {
-            var pet = _repository.GetPetWithTutor(id);
+            var pet = await _service.GetPetWithTutor(id);
             if (pet == null)
             {
                 return NotFound("Pet não localizado");
@@ -102,9 +104,9 @@ namespace MyPet.Controllers
         }
 
         [HttpGet("info/{id}")]
-        public IActionResult GetInfo(int id)
+        public async Task<IActionResult> GetInfo(int id)
         {
-            var pet = _repository.GetPetWithTutor(id);
+            var pet = await _service.GetPetWithTutor(id);
             if (pet == null)
             {
                 return NotFound("Pet não localizado");
