@@ -53,7 +53,11 @@ namespace MyPet.Controllers
             var endereco = await _service.GetEnderecosByCep(cep1);
 
             if (endereco == null)
+            {
+
                 response = await _service.CreateEndereco(request);
+            }
+                
 
             if (endereco != null)
                 return BadRequest("Endereço já cadastrado!");
