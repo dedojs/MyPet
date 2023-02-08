@@ -26,8 +26,6 @@ builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<ITutorService, TutorService>();
 builder.Services.AddScoped<IEnderecoService, EnderecoService>();
 
-
-
 // Add Mapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

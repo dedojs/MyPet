@@ -18,6 +18,7 @@ namespace MyPet.Controllers
             _enderecoService = enderecoService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetTutores(int? page, int? row, string? orderBy)
         {
@@ -38,23 +39,24 @@ namespace MyPet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTutores([FromBody] CreateTutorDto request)
+        public async Task<IActionResult> CreateTutor([FromBody] CreateTutorDto request)
         {
+            var findTutor = await _service.GetTutorByEmail(request.Email);
+
+            if (findTutor != null)
+                return BadRequest("Esse usuário já esta cadastrado");
+
             if (request == null)
-            {
                 return BadRequest("Elemento Inválido");
-            }
 
             var enderecoDto = await _service.ValidateCep(request.Cep);
 
             if (enderecoDto == null || enderecoDto.Localidade == null)
-            {
                 return NotFound("Cep Inválido");
-            }
-
-            var response = await _service.CreateTutor(request);
 
             var endereco = await _enderecoService.CreateEndereco(enderecoDto);
+
+            var response = await _service.CreateTutor(request);
 
             return CreatedAtAction(nameof(GetTutor), new { id = response.TutorId }, response);
         }
@@ -85,7 +87,7 @@ namespace MyPet.Controllers
         {
             var tutorDto = await _service.DeleteTutor(id);
 
-            if (tutorDto == null)
+            if (tutorDto == false)
             {
                 return NotFound("Tutor não localizado");
             }

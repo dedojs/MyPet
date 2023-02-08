@@ -1,16 +1,16 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Moq.Protected;
 using MyPet.Application.Dtos.PetDtos;
 using MyPet.Controllers;
-using MyPet.Domain.Entidades;
-using MyPet.Infra.Data.Repository.PetRepository;
 using MyPet.Services.TutorServices;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace MyPet.Tests
 {
-    public class PetRepositoryTest
+    public class PetControllerTest
     {
         [Fact(DisplayName = "Retorna a lista todos os Pets")]
         public async Task RetornaComSucessoTodosOsPetsAsync()
@@ -177,6 +177,31 @@ namespace MyPet.Tests
 
             repository.Verify(p => p.DeletePet(petIdEntry), Times.Once);
             petResponse.As<NoContentResult>().StatusCode.Should().Be((int)HttpStatusCode.NoContent);
+        }
+
+        [Fact(DisplayName = "Retorna as informações completas do PET")]
+        public async Task BuscaAsInformacoesCompletasDoPet()
+        {
+            var url = "https://localhost:7101/pet/info/1";
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            var jsonData = "{\"petId\":1,\"nome\":\"July\",\"porte\":\"Pequeno\",\"raca\":\"Cão\",\"dataNascimento\":\"2020-01-10T00:00:00\",\"idade\":3,\"tutorId\":1,\"tutor\":{\"tutorId\":1,\"nome\":\"Andre\",\"email\":\"andre@gmail.com\",\"cep\":\"45028125\",\"endereco\":{\"enderecoId\":3,\"cep\":\"45028-125\",\"logradouro\":\"Avenida João Abuchidid\",\"complemento\":\"\",\"bairro\":\"Candeias\",\"localidade\":\"Vitória da Conquista\",\"uf\":\"BA\"}}}";
+            var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Content = content,
+                });
+
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            var response = await httpClient.GetAsync(url);
+            var data = JsonConvert.DeserializeObject<PetDtoWithTutor>(await response.Content.ReadAsStringAsync());
+
+            data.Nome.Should().Be("July");
+            data.Tutor.Nome.Should().Be("Andre");
+            data.Tutor.Endereco.Cep.Should().Be("45028-125");
         }
 
     }

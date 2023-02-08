@@ -9,10 +9,12 @@ namespace MyPet.Profiles
         public TutorProfile()
         {
             CreateMap<CreateTutorDto, Tutor>();
+            CreateMap<CreateTutorDto, TutorDto>();
             CreateMap<Tutor, TutorDto>();
             CreateMap<Tutor, TutorDtoEndereco>();
             CreateMap<Tutor, TutorLoginDto>();
             CreateMap<TutorLoginDto, Tutor>();
+            CreateMap<Tutor, TutorDtoSimple>();
         }
     }
 }

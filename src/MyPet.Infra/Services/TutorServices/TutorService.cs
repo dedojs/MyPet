@@ -5,6 +5,8 @@ using MyPet.Domain.Entidades;
 using MyPet.Infra.Data.Repository.EnderecoRepository;
 using MyPet.Infra.Data.Repository.TutorRepository;
 using System.Net.Http.Json;
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MyPet.Services.TutorServices
 {
@@ -41,11 +43,11 @@ namespace MyPet.Services.TutorServices
             return result;
         }
 
-        public async Task<IEnumerable<TutorDto>> GetTutores(int? page, int? row, string? orderBy)
+        public async Task<IEnumerable<TutorDtoSimple>> GetTutores(int? page, int? row, string? orderBy)
         {
             var listTutores = await _repository.GetTutores(page, row, orderBy);
 
-            var listTutoresDto = listTutores.Select(e => _mapper.Map<TutorDto>(e));
+            var listTutoresDto = listTutores.Select(e => _mapper.Map<TutorDtoSimple>(e));
 
             return listTutoresDto;
         }
@@ -53,6 +55,24 @@ namespace MyPet.Services.TutorServices
         public async Task<TutorDto> GetTutor(int id)
         {
             var tutor = await _repository.GetTutor(id);
+
+            if (tutor == null)
+            {
+                return null;
+            }
+
+            var cep = tutor.Cep.Insert(5, "-");
+            var endereco = await _enderecoRepository.GetEnderecosByCep(cep);
+
+            var tutorDto = _mapper.Map<TutorDto>(tutor);
+
+            tutorDto.Endereco = endereco;
+
+            return tutorDto;
+        }
+        public async Task<TutorDto> GetTutorByEmail(string email)
+        {
+            var tutor = await _repository.GetTutorByEmail(email);
 
             if (tutor == null)
             {
@@ -85,11 +105,12 @@ namespace MyPet.Services.TutorServices
 
         public async Task<TutorDto> CreateTutor(CreateTutorDto createTutorDto)
         {
+
             var tutor = _mapper.Map<Tutor>(createTutorDto);
             
             var tutorCreated = await _repository.CreateTutor(tutor);
 
-            var tutorDto = _mapper.Map<TutorDto>(tutorCreated);
+            var tutorDto = await GetTutor(tutorCreated.TutorId);
 
             return tutorDto;
         }
@@ -108,18 +129,16 @@ namespace MyPet.Services.TutorServices
             return true;
         }
 
-        public async Task<TutorDto> DeleteTutor(int id)
+        public async Task<bool> DeleteTutor(int id)
         {
             var tutor = await _repository.GetTutor(id);
 
             if (tutor == null)
-                return null;
+                return false;
 
             await _repository.DeleteTutor(tutor);
 
-            var tutorDto = _mapper.Map<TutorDto>(tutor);
-
-            return tutorDto;
+            return true;
         }
 
         public async Task<Tutor> ValidadeLoginTutor(TutorLoginDto tutorLogin)

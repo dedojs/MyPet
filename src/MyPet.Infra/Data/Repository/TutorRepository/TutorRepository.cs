@@ -29,8 +29,19 @@ namespace MyPet.Infra.Data.Repository.TutorRepository
 
         public async Task<Tutor> GetTutor(int id)
         {
-            var tutor = await _context.Tutores.FirstOrDefaultAsync(t => t.TutorId == id);
+            var tutor = await _context.Tutores.FindAsync(id);
 
+            if (tutor == null)
+            {
+                return null;
+            }
+
+            return tutor;
+        }
+
+        public async Task<Tutor> GetTutorByEmail(string email)
+        {
+            var tutor = await _context.Tutores.FirstOrDefaultAsync(t => t.Email == email);
             if (tutor == null)
             {
                 return null;

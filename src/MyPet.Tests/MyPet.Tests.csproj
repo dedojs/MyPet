@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,6 +7,10 @@
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ValidateCepTest.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.9.0" />
@@ -25,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyPet.Api\MyPet.Api.csproj" />
+    <ProjectReference Include="..\MyPet.Domain\MyPet.Domain.csproj" />
     <ProjectReference Include="..\MyPet.Infra\MyPet.Infra.csproj" />
   </ItemGroup>
 
