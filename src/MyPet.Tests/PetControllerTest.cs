@@ -15,7 +15,6 @@ namespace MyPet.Tests
         [Fact(DisplayName = "Retorna a lista todos os Pets")]
         public async Task RetornaComSucessoTodosOsPetsAsync()
         {
-            var repository = new Mock<IPetService>();
             var listPets = new List<PetDto>()
             {
                 new PetDto
@@ -64,6 +63,7 @@ namespace MyPet.Tests
                         DataNascimento = new DateTime(2012, 01, 31).Date
                     }
             };
+            var repository = new Mock<IPetService>();
 
             repository.Setup(p => p.GetPets(5, 1, "name"))
                 .Returns(Task.FromResult(listPets.AsEnumerable()));
@@ -76,7 +76,6 @@ namespace MyPet.Tests
             allPets.As<ObjectResult>().Value.As<List<PetDto>>().Should().BeEquivalentTo(listPets);
             allPets.As<ObjectResult>().Value.As<List<PetDto>>().Should().HaveCount(5);
             allPets.As<OkObjectResult>().StatusCode.Should().Be((int)HttpStatusCode.OK);
-
         }
 
         [Theory(DisplayName = "Retorna o pet informado através de seu ID")]
@@ -95,7 +94,7 @@ namespace MyPet.Tests
 
             var repository = new Mock<IPetService>();
 
-            repository.Setup(p => p.GetPet(idEntry)).Returns(Task.FromResult(petDto));
+            repository.Setup(p => p.GetPet(idEntry)).ReturnsAsync(petDto);
 
             var petController = new PetController(repository.Object);
             var petResponse = await petController.GetPet(idEntry);
